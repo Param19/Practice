@@ -1,0 +1,22 @@
+
+1. use separate connections for publish/consume 
+    * publishes may be TCP back pressured
+	* then the server wont receive AMQP acks either
+2. Keep connection / channel count low
+		* reuse connections
+		* 1 connection for publishing
+		* 1 connection for consuming
+		* 1 channel per thread
+3. Every connection uses\
+		* TCP buffer space (auto turned but need to be decreased)
+		* CPU for metric collection by RABBITMQ mgmt UI
+		
+=============
+Queues are single-threaded
+Max performance: one queue per core
+	*consistent hash exchange plugin
+	*RabbitMQ sharding
+consume (push) , don't poll for messages
+auto-ack or ack every x msgs instead of every msgs
+RabbitMQ management interface collects and store stats for all queues.
+====================
